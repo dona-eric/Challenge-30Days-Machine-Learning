@@ -5,7 +5,7 @@ from sklearn.impute import SimpleImputer
 from src.init.config import configs
 
 params = configs()
-imputation_strategy = params['preprocess']['imputation_strategy']
+imputation_strategy = params['preprocess']['imputation_method']
 
 
 def preprocessing_data(file: str) -> pd.DataFrame:

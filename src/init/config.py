@@ -1,6 +1,8 @@
 import yaml 
 from pathlib import Path
-PARAMS_PATH = Path(__file__).resolve().parent.parent / "params.yml"
+ROOT_DIR = Path(__file__).resolve().parents[2]
+PARAMS_PATH = ROOT_DIR / "params.yml"
+
 
 
 def configs()->dict:

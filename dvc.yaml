@@ -24,8 +24,22 @@ stages:
     - params.yml
     - src/DATA/processed/df_prepare.xlsx
     - src/init/load_data.py
+    - src/init/config.py
+    - src/processing/train.py
     - src/processing/feature.py
+    - src/init/paths.py
     outs:
     - src/DPE_MODELS/X_test.csv
     - src/DPE_MODELS/pde_model.pkl
     - src/DPE_MODELS/y_test.csv
+  EVALUATION:
+    cmd: python3 -m src.processing.evaluate
+    deps:
+    - src/DPE_MODELS/X_test.csv
+    - src/DPE_MODELS/pde_model.pkl
+    - src/DPE_MODELS/y_test.csv
+    - src/processing/feature.py
+    - src/processing/train.py
+    outs:
+    - src/DPE_MODELS/metrics.yml
+

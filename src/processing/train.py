@@ -45,14 +45,14 @@ def train():
         random_state=params['models']['random_state'],
         max_depth=params['models']['max_depth'],
         min_samples_split=params['models']['min_samples_split'],
-        min_samples_leaf=params['models']['miin_samples_leaf'],
+        min_samples_leaf=params['models']['min_samples_leaf'],
         n_jobs=params['models']['n_jobs']
     )
     # --- Build pipeline ---
     pipeline = Pipeline(
         steps=[
             ("preprocessor", preprocessor),
-            (model_name, models)
+            ("model", models)
         ]
     )
 
@@ -65,9 +65,11 @@ def train():
 
 
     # --- sauvegarde des indices test pour evaluate.py ---
-    output_path_X = MODELS_DIR / "X_test.csv"
-    output_path_y = MODELS_DIR / "y_test.csv"
+    X_test.to_csv(MODELS_DIR / "X_test.csv", index=False)
+    y_test.to_csv(MODELS_DIR / 'y_test.csv', index=False)
+    print("✅ Training done")
 
-    X_test.to_csv(output_path_X, index=False)
-    y_test.to_csv(output_path_y, index=False)
     print("Training done, model saved at:", MODELS_DIR / "pde_model.pkl")
+
+if __name__ == "__main__":
+    train()
