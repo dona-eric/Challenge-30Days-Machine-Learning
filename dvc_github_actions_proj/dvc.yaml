@@ -36,3 +36,8 @@ stages:
     - src/processing/train.py
     outs:
     - DPE_MODELS/metrics.json
+  FEATURE_ENGINEERING:
+    cmd: python3 -m src.processing.feature
+    deps:
+    - DATA/processed/df_prepare.xlsx
+    - src/processing/feature.py
