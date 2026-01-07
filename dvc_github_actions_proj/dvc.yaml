@@ -1,0 +1,10 @@
+stages:
+  PRETRAITEMENT:
+    cmd: python3 -m src.processing.preprocess
+    deps:
+    - DATA/raw/dpe-france.xlsx
+    - src/init/load_data.py
+    - src/init/paths.py
+    - src/processing/preprocess.py
+    outs:
+    - DATA/processed/df_prepare
