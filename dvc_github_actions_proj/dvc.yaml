@@ -23,3 +23,16 @@ stages:
     - DPE_MODELS/pde_models.pkl:
         cache: false
     - DPE_MODELS/y_test.csv
+  EVALUATION:
+    cmd: python3 -m src/processing/evaluate.py
+    deps:
+    - DATA/processed/df_prepare.xlsx
+    - DPE_MODELS/X_test.csv
+    - DPE_MODELS/pde_models.pkl
+    - DPE_MODELS/y_test.csv
+    - params.json
+    - src/processing/evaluate.py
+    - src/processing/feature.py
+    - src/processing/train.py
+    outs:
+    - DPE_MODELS/metrics.json
