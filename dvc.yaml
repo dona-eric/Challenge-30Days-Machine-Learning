@@ -1,9 +1,31 @@
 stages:
-  PRETRAITEMENT:
-    cmd: python3 ./DVC-GithuActions-Proj/src/Processing/preprocess.py
+  LOADING_DATA:
+    cmd: python3 -m src.init.load_data
     deps:
-    - ./DVC-GithuActions-Proj/DATA/raw/dpe-france.xlsx
-    - ./DVC-GithuActions-Proj/src/init/load_data.py
-    - ./DVC-GithuActions-Proj/src/init/paths.py
+    - src/DATA/raw/dpe-france.xlsx
+    - src/init/paths.py
+  PREPROCESSING:
+    cmd: python3 -m src.processing.preprocess
+    deps:
+    - params.yml
+    - src/DATA/raw/dpe-france.xlsx
+    - src/init/config.py
+    - src/init/paths.py
     outs:
-    - ./DVC-GithuActions-Proj/DATA/processed/df_prepare
+    - src/DATA/processed/df_prepare.xlsx
+  FEATURE_ENGINEERING:
+    cmd: python3 -m src.processing.feature
+    deps:
+    - params.yml
+    - src/DATA/processed/df_prepare.xlsx
+  TRAIN:
+    cmd: python3 -m src.processing.train
+    deps:
+    - params.yml
+    - src/DATA/processed/df_prepare.xlsx
+    - src/init/load_data.py
+    - src/processing/feature.py
+    outs:
+    - src/DPE_MODELS/X_test.csv
+    - src/DPE_MODELS/pde_model.pkl
+    - src/DPE_MODELS/y_test.csv

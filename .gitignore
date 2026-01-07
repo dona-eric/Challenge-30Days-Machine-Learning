@@ -211,3 +211,6 @@ env-ci-cd/
 .dvcignore
 .vscode/
 .dvc/
+/src.init.load_data
+/src.init.paths
+/src.init.config

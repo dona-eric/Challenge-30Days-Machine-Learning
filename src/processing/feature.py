@@ -5,6 +5,11 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.ensemble import RandomForestRegressor
 from src.init.paths import PROCESSED_DATA
+from src.init.config import configs
+
+params = configs()
+
+target = params['feature_engineering']['target']
 
 data = PROCESSED_DATA / "df_prepare.xlsx"
 def feature_engineering(df: pd.DataFrame):
@@ -23,7 +28,7 @@ def feature_engineering(df: pd.DataFrame):
     """
 
     # Target
-    TARGET = "consommation_energie"
+    TARGET = target
     
     # Feature engineering
     df["age_batiment"] = df["year"] - df["annee_construction"]
@@ -71,22 +76,22 @@ def feature_engineering(df: pd.DataFrame):
     return X, y, preprocessor
 
 
-def get_pipeline(preprocessor, model=None):
-    """
-    Create full sklearn pipeline with preprocessor + model.
-    Default model: RandomForestRegressor
-    """
-    if model is None:
-        model = RandomForestRegressor(
-            n_estimators=200,
-            random_state=42,
-            n_jobs=-1
-        )
+# def get_pipeline(preprocessor, model=None):
+#     """
+#     Create full sklearn pipeline with preprocessor + model.
+#     Default model: RandomForestRegressor
+#     """
+#     if model is None:
+#         model = RandomForestRegressor(
+#             n_estimators=200,
+#             random_state=42,
+#             n_jobs=-1
+#         )
 
-    pipeline = Pipeline(
-        steps=[
-            ("preprocessing", preprocessor),
-            ("model", model)
-        ]
-    )
-    return pipeline
+#     pipeline = Pipeline(
+#         steps=[
+#             ("preprocessing", preprocessor),
+#             ("model", model)
+#         ]
+#     )
+#     return pipeline

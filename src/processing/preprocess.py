@@ -2,6 +2,10 @@ import pandas as pd
 from src.init.load_data import data_loaded, file_path
 from src.init.paths import PROCESSED_DATA
 from sklearn.impute import SimpleImputer
+from src.init.config import configs
+
+params = configs()
+imputation_strategy = params['preprocess']['imputation_strategy']
 
 
 def preprocessing_data(file: str) -> pd.DataFrame:
@@ -47,7 +51,7 @@ def preprocessing_data(file: str) -> pd.DataFrame:
             col for col in columns_imputer if col in df.columns
         ]
 
-        imputer = SimpleImputer(strategy="median")
+        imputer = SimpleImputer(strategy=imputation_strategy)
 
         df[columns_imputer] = imputer.fit_transform(df[columns_imputer])
         df.dropna(subset=["code_insee_commune_actualise"])

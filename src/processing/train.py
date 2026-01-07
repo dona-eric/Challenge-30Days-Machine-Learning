@@ -2,7 +2,9 @@ import pandas as pd
 import json, joblib
 from pathlib import Path
 from sklearn.model_selection import train_test_split
-from src.processing.feature import feature_engineering, get_pipeline
+from src.processing.feature import feature_engineering
+from sklearn.pipeline import Pipeline
+from sklearn.ensemble import RandomForestRegressor
 from src.init.paths import PROCESSED_DATA, MODELS_DIR
 from src.init.config import configs
 
@@ -10,8 +12,7 @@ from src.init.config import configs
 params = configs()
 
 test_size, random_state, shuffle = params['split']['test_size'], params['split']['random_state'], params['split']['shuffle']
-model_params = params['model_params']
-
+model_name = params['models']['name']
 def train():
     """
     Train ML model on preprocessed and feature-engineered data.
@@ -36,14 +37,24 @@ def train():
         X, y,
         test_size=test_size,
         random_state=random_state,
-        shuffle=True,
         shuffle=shuffle
     )
 
+    models = RandomForestRegressor(
+        n_estimators=params['models']['n_estimators'],
+        random_state=params['models']['random_state'],
+        max_depth=params['models']['max_depth'],
+        min_samples_split=params['models']['min_samples_split'],
+        min_samples_leaf=params['models']['miin_samples_leaf'],
+        n_jobs=params['models']['n_jobs']
+    )
     # --- Build pipeline ---
-    pipeline = get_pipeline(preprocessor,
-                            model=None)
-    pipeline.named_steps["model"].set_params(**model_params)
+    pipeline = Pipeline(
+        steps=[
+            ("preprocessor", preprocessor),
+            (model_name, models)
+        ]
+    )
 
     # --- Fit model ---
     pipeline.fit(X_train, y_train)
