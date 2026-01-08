@@ -42,4 +42,17 @@ stages:
     - src/processing/train.py
     outs:
     - src/DPE_MODELS/metrics.yml
-
+    - src/PLOTS/error_distribution.png
+    - src/PLOTS/predicted_vs_actual.png
+    - src/PLOTS/residuals_vs_predictions.png
+  TUNING_HYPERPARAMETER_EVALUATION:
+    cmd: python3 -m src.processing.tuning
+    deps:
+    - params.yml
+    - params_tuning.yml
+    - src/DATA/processed/df_prepare.xlsx
+    - src/init/config.py
+    - src/processing/evaluate.py
+    - src/processing/feature.py
+    outs:
+    - src/DPE_MODELS/metrics_best.yml
