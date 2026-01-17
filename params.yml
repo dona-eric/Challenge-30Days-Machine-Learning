@@ -1,0 +1,28 @@
+# params.yml the file who contains all parameters for the project
+
+preprocess:
+  imputation_method: median
+
+feature_engineering:
+  target: consommation_energie
+
+split:
+  test_size: 0.2
+  random_state: 20000
+  shuffle: True
+
+models:
+  random_state: 20000
+  name: random_forest
+  n_estimators: 200
+  max_depth: 100
+  min_samples_split: 2
+  min_samples_leaf: 1
+  n_jobs: -1
+
+evaluation:
+  metrics:
+    - r2_score
+    - mean_absolute_error
+    - mean_squared_error
+    - root_mean_squared_error

@@ -205,3 +205,12 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+
+env-ci-cd/
+.dvcignore
+.vscode/
+.dvc/
+/src.init.load_data
+/src.init.paths
+/src.init.config

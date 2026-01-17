@@ -1,0 +1,120 @@
+schema: '2.0'
+stages:
+  LOADING_DATA:
+    cmd: python3 -m src.init.load_data
+    deps:
+    - path: src/DATA/raw/dpe-france.xlsx
+      hash: md5
+      md5: 7d004ef043a2bda71de71239ee22ecc7
+      size: 2297836
+    - path: src/init/paths.py
+      hash: md5
+      md5: ba87de5e139c2af72b8fdb9edab01b3c
+      size: 353
+  PREPROCESSING:
+    cmd: python3 -m src.processing.preprocess
+    deps:
+    - path: params.yml
+      hash: md5
+      md5: 305d16e6536db793ec14dd24ad642218
+      size: 491
+    - path: src/DATA/raw/dpe-france.xlsx
+      hash: md5
+      md5: 7d004ef043a2bda71de71239ee22ecc7
+      size: 2297836
+    - path: src/init/config.py
+      hash: md5
+      md5: 75554cbbe20c2def84d8e251e3e78332
+      size: 509
+    - path: src/init/paths.py
+      hash: md5
+      md5: ba87de5e139c2af72b8fdb9edab01b3c
+      size: 353
+    outs:
+    - path: src/DATA/processed/df_prepare.xlsx
+      hash: md5
+      md5: d5d96acc8438d7b241c27809f3a79bb1
+      size: 613818
+  FEATURE_ENGINEERING:
+    cmd: python3 -m src.processing.feature
+    deps:
+    - path: params.yml
+      hash: md5
+      md5: 305d16e6536db793ec14dd24ad642218
+      size: 491
+    - path: src/DATA/processed/df_prepare.xlsx
+      hash: md5
+      md5: d5d96acc8438d7b241c27809f3a79bb1
+      size: 613818
+  TRAIN:
+    cmd: python3 -m src.processing.train
+    deps:
+    - path: params.yml
+      hash: md5
+      md5: 305d16e6536db793ec14dd24ad642218
+      size: 491
+    - path: src/DATA/processed/df_prepare.xlsx
+      hash: md5
+      md5: d5d96acc8438d7b241c27809f3a79bb1
+      size: 613818
+    - path: src/init/config.py
+      hash: md5
+      md5: 75554cbbe20c2def84d8e251e3e78332
+      size: 509
+    - path: src/init/load_data.py
+      hash: md5
+      md5: 8ba071159618b56c0f386d6bb26115c5
+      size: 1010
+    - path: src/init/paths.py
+      hash: md5
+      md5: ba87de5e139c2af72b8fdb9edab01b3c
+      size: 353
+    - path: src/processing/feature.py
+      hash: md5
+      md5: bc284e40a75bb02bdb818df1ad46d2ec
+      size: 2622
+    - path: src/processing/train.py
+      hash: md5
+      md5: 34102085fc623fb04516b807e946efbf
+      size: 2258
+    outs:
+    - path: src/DPE_MODELS/X_test.csv
+      hash: md5
+      md5: 3220e4bce9412586a6e6a1a2354fcef5
+      size: 72424
+    - path: src/DPE_MODELS/pde_model.pkl
+      hash: md5
+      md5: cf14616f8aa54882ac33540c1d97c128
+      size: 115260266
+    - path: src/DPE_MODELS/y_test.csv
+      hash: md5
+      md5: 157c8e16f1b42018628842f47308a41f
+      size: 11884
+  EVALUATION:
+    cmd: python3 -m src.processing.evaluate
+    deps:
+    - path: src/DPE_MODELS/X_test.csv
+      hash: md5
+      md5: 3220e4bce9412586a6e6a1a2354fcef5
+      size: 72424
+    - path: src/DPE_MODELS/pde_model.pkl
+      hash: md5
+      md5: cf14616f8aa54882ac33540c1d97c128
+      size: 115260266
+    - path: src/DPE_MODELS/y_test.csv
+      hash: md5
+      md5: 157c8e16f1b42018628842f47308a41f
+      size: 11884
+    - path: src/processing/feature.py
+      hash: md5
+      md5: bc284e40a75bb02bdb818df1ad46d2ec
+      size: 2622
+    - path: src/processing/train.py
+      hash: md5
+      md5: 34102085fc623fb04516b807e946efbf
+      size: 2258
+    outs:
+    - path: src/DPE_MODELS/metrics.yml
+      hash: md5
+      md5: 0fae89a920ede5a64d73075165ca1e28
+      size: 95

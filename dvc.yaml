@@ -1,0 +1,58 @@
+stages:
+  LOADING_DATA:
+    cmd: python3 -m src.init.load_data
+    deps:
+    - src/DATA/raw/dpe-france.xlsx
+    - src/init/paths.py
+  PREPROCESSING:
+    cmd: python3 -m src.processing.preprocess
+    deps:
+    - params.yml
+    - src/DATA/raw/dpe-france.xlsx
+    - src/init/config.py
+    - src/init/paths.py
+    outs:
+    - src/DATA/processed/df_prepare.xlsx
+  FEATURE_ENGINEERING:
+    cmd: python3 -m src.processing.feature
+    deps:
+    - params.yml
+    - src/DATA/processed/df_prepare.xlsx
+  TRAIN:
+    cmd: python3 -m src.processing.train
+    deps:
+    - params.yml
+    - src/DATA/processed/df_prepare.xlsx
+    - src/init/load_data.py
+    - src/init/config.py
+    - src/processing/train.py
+    - src/processing/feature.py
+    - src/init/paths.py
+    outs:
+    - src/DPE_MODELS/X_test.csv
+    - src/DPE_MODELS/pde_model.pkl
+    - src/DPE_MODELS/y_test.csv
+  EVALUATION:
+    cmd: python3 -m src.processing.evaluate
+    deps:
+    - src/DPE_MODELS/X_test.csv
+    - src/DPE_MODELS/pde_model.pkl
+    - src/DPE_MODELS/y_test.csv
+    - src/processing/feature.py
+    - src/processing/train.py
+    outs:
+    - src/DPE_MODELS/metrics.yml
+    - src/PLOTS/error_distribution.png
+    - src/PLOTS/predicted_vs_actual.png
+    - src/PLOTS/residuals_vs_predictions.png
+  TUNING_HYPERPARAMETER_EVALUATION:
+    cmd: python3 -m src.processing.tuning
+    deps:
+    - params.yml
+    - params_tuning.yml
+    - src/DATA/processed/df_prepare.xlsx
+    - src/init/config.py
+    - src/processing/evaluate.py
+    - src/processing/feature.py
+    outs:
+    - src/DPE_MODELS/metrics_best.yml
