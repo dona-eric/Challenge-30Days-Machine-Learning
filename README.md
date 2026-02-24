@@ -228,4 +228,5 @@ UNE SEULE ACTION :
 
 ***Share***
 
-                 Fait le 24 Février 2026
+                 Fait le 24 Février 2026# 30 Days ML Math Challenge
+Mon dépôt pour le challenge de 30 jours sur les mathématiques du Machine Learning.
